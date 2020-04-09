@@ -2,8 +2,8 @@
   <div id="app">
     <h1>Things Todo</h1>
     <div id="todoList">
-      <div id="noTasks" v-if="!todoList.length">You don't have any tasks yet.</div>
-      <div id="noTasks" v-if="error">Task already exists.</div>
+      <div class="noTasks" v-if="!todoList.length">You don't have any tasks yet.</div>
+      <div class="noTasks" v-if="error">Task already exists.</div>
 
       <div class="list">
         <ListItem
@@ -11,7 +11,17 @@
           :key="task.task"
           :task="task"
           @deleteTask="deleteTask(task)"
-          @toggleTask="toggleTask(task)" />
+          @toggleTask="toggleTask(task)">
+          <template #title>
+            <template v-if="editId === task.id">
+              <input v-model="editionText" type="text" name="" id="" @keypress.enter="setText(task)">
+            </template>
+            <template v-else>
+              <span>{{ task.task }}</span>
+              <button @click="editTask(task)">Editar</button>
+            </template>
+          </template>
+        </ListItem>
       </div>
       
       <NewTask @addTask="addTask" />
@@ -29,6 +39,9 @@ export default {
     return {
       todoList: [],
       error: false,
+      uniqueId: 0,
+      editId: null,
+      editionText: '',
     };
   },
   methods: {
@@ -41,6 +54,7 @@ export default {
         setTimeout(() => (this.error = false), 3000);
       } else {
         this.todoList.push({
+          id: this.uniqueId++,
           task: newTask,
           done: false,
         });
@@ -51,6 +65,14 @@ export default {
     },
     toggleTask(task) {
       task.done = !task.done;
+    },
+    editTask(task) {
+      this.editionText = task.task;
+      this.editId = task.id;
+    },
+    setText(task) {
+      task.task = this.editionText;
+      this.editId = null;
     }
   },
   components: {
@@ -104,7 +126,7 @@ h1 {
     padding: 25px;
   }
 
-  #noTasks {
+  .noTasks {
     background: rgba(0, 0, 0, 0.05);
     padding: 15px;
     display: flex;

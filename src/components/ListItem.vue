@@ -4,7 +4,9 @@
       :class="{ checkBox: true, done: task.done }"
       @click="toggleTask"
     ></div>
-    <span>{{ task.task }}</span>
+    <slot name="title">
+      {{ task.task }}
+    </slot>
     <i @click="deleteTask" class="material-icons">delete</i>
   </div>
 </template>
@@ -86,6 +88,7 @@ export default {
   span {
     position: relative;
     transition: all 0.2s ease-in-out;
+    margin-right: 5px;
     &:before {
       content: "";
       height: 1px;
