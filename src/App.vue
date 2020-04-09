@@ -10,7 +10,8 @@
           v-for="task in todoList"
           :key="task.task"
           :task="task"
-          @deleteTask="deleteTask" />
+          @deleteTask="deleteTask(task)"
+          @toggleTask="toggleTask(task)" />
       </div>
       
       <NewTask @addTask="addTask" />
@@ -47,6 +48,9 @@ export default {
     },
     deleteTask(task) {
       this.todoList = this.todoList.filter(t => t.task !== task.task);
+    },
+    toggleTask(task) {
+      task.done = !task.done;
     }
   },
   components: {

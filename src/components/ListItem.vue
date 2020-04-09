@@ -2,10 +2,10 @@
   <div :class="{ task: true, done: task.done }">
     <div
       :class="{ checkBox: true, done: task.done }"
-      @click="toggleTask(task)"
+      @click="toggleTask"
     ></div>
     <span>{{ task.task }}</span>
-    <i @click="deleteTask(task)" class="material-icons">delete</i>
+    <i @click="deleteTask" class="material-icons">delete</i>
   </div>
 </template>
 
@@ -15,10 +15,10 @@ export default {
   props: ["task"],
   methods: {
     toggleTask() {
-      this.task.done = !this.task.done;
+      this.$emit("toggleTask");
     },
-    deleteTask(task) {
-      this.$emit("deleteTask", task);
+    deleteTask() {
+      this.$emit("deleteTask");
     },
   },
 };
